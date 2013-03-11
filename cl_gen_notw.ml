@@ -7,8 +7,8 @@ let generate n =
    let ename = expand_name !Magic.codelet_name in
 
    let make_acc () = locative_array_c n
-      (Printf.sprintf "v%d->s0")
-      (Printf.sprintf "v%d->s1")
+      (Printf.sprintf "v%d.s0")
+      (Printf.sprintf "v%d.s1")
       (unique_array_c n) "" in
    let input = load_array_c n (make_acc ()) in
    let output = store_array_c n (make_acc ()) in
@@ -17,8 +17,14 @@ let generate n =
    let annot = standard_optimizer dag in
 
    let tree = Fcn ("void", ename,
-      (List.map (fun i -> Decl ("real2_t *", Printf.sprintf "v%d" i)) (iota n)),
-      finalize_fcn (Asch annot))
+      (List.map (fun i -> Decl ("real2_t *", Printf.sprintf "u%d" i)) (iota n)),
+      Block (
+         List.map (fun i -> Tdecl (Printf.sprintf "real2_t v%d = *u%d;\n" i i)) (iota n),
+         finalize_fcn (Asch annot) ::
+            List.map (fun i -> Stmt_assign (
+               CVar (Printf.sprintf "*u%d" i),
+               CVar (Printf.sprintf "v%d" i))) (iota n)
+      ))
    in ((unparse tree) ^ "\n")
 
 let main () =
