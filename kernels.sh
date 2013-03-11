@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+# This software is in the public domain, furnished "as is", without technical
+# support, and with no warranty, express or implied, as to its usefulness for
+# any purpose.
+#
+# Author: Pascal Germroth <pascal@ensieve.org>
+
 primes="2 3 5 7 11 13"
 max_size=25
 ns=`for p in $primes ; do

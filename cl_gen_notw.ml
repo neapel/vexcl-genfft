@@ -1,3 +1,10 @@
+(* This software is in the public domain, furnished "as is", without technical
+ * support, and with no warranty, express or implied, as to its usefulness for
+ * any purpose.
+ *
+ * Author: Pascal Germroth <pascal@ensieve.org>
+ *)
+
 open Util
 open Genutil
 open C
