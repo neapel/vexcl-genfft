@@ -41,7 +41,12 @@ echo
 
 function code() {
     echo -n "                src"
-	/usr/bin/time ./cl_gen_notw.native -n $1 -name "dft$1" -sign $2 -compact -fma -reorder-insns -reorder-loads -reorder-stores -schedule-for-pipeline -pipeline-latency 4 -standalone | gcc -E -P -C - | indent -i4 -nut | while IFS= read -r line ; do
+	/usr/bin/time ./cl_gen_notw.native -n $1 -name "dft$1" -sign $2 \
+            -compact -fma -reorder-insns -reorder-loads -reorder-stores \
+            -schedule-for-pipeline -pipeline-latency 4 -standalone      \
+            | gcc -E -P -C - | indent -i4 -nut                          \
+            | sed '/Copyright/,/<threads\.h>/d'                         \
+            | while IFS= read -r line ; do
 		echo -ne "\n                    << \"${line}\\\n\""
 	done
     echo ";"
